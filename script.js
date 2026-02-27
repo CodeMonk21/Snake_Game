@@ -1,8 +1,8 @@
 //Logic:- No of board columns = boardAcutalWidth/boxWidht--> whole no of this
 //Logic:- No of board rows = boardAcutalHeight/boxHeight--> whole no of this
 const board = document.querySelector(".gridBoard");
-const startButton = document.querySelector(".startButton")
-const gameBlock = document.querySelector(".model")
+// const startButton = document.querySelector(".startButton")
+// const gameBlock = document.querySelector(".model")
 const blockHeight = 50;
 const blockWidth = 50;
 
@@ -19,23 +19,16 @@ let direction = "right"
 let score = 0
 let highScore = 0
 
-//Function to update score
-const updateScore = ()=>{
-    score++
-    document.querySelector(".score").innerText = score
-    if(score>highScore){
-        highScore = score
-        document.querySelector(".highScore").innerHTML = highScore
-        sessionStorage.setItem("highScore",highScore)
-    }
-}
-
-
-//Event listner for Starting of Game
-startButton.addEventListener("click",()=>{
-    gameBlock.style.display = "none"
-    StartGame()
-})
+// //Function to update score
+// const updateScore = ()=>{
+//     score++
+//     document.querySelector(".score").innerText = score
+//     if(score>highScore){
+//         highScore = score
+//         document.querySelector(".highScore").innerHTML = highScore
+//         sessionStorage.setItem("highScore",highScore)
+//     }
+// }
 
 
 //Event listner for keypress
@@ -114,27 +107,11 @@ function renderSnake(){
     
 }
 
-function StartGame(){
-    //Render snake element every 300 milisecond
-    if(sessionStorage.getItem("highScore")!=null){
-        highScore = sessionStorage.getItem("highScore");
-        document.querySelector(".highScore").innerHTML = highScore;
-    }
-    interval = setInterval(()=>{
-        renderSnake()
-    },400)
-}
 
-function EndGame(){
-    clearInterval(interval)
-    gameBlock.style.display = "flex"
-    document.querySelector(".modelHeading").innerHTML = "Game Over"
-    document.querySelector(".scoreShow").style.display = "flex"
-    document.querySelector(".scoreUser").innerHTML = score
-    document.querySelector(".hightScoreUser").innerHTML = highScore
-    startButton.innerHTML = "Restart Game"
-    startButton.classList.add("restart")
-}
+// interval = setInterval(()=>{
+//     renderSnake()
+// },400)
+
 
 
 
