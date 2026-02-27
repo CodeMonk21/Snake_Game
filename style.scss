@@ -117,7 +117,6 @@ main.frame{
         gap: var(--space-lg);
         background-color: #21212162;
 
-
         button.btn{
             padding: var(--space-sm) var(--space-md);
             font-size: var(--fontSize-lg);
@@ -126,12 +125,11 @@ main.frame{
             color: var(--text-color);    
             cursor: pointer;
             transition: all ease-in-out 0.2s;
-            background-color: var(--bg-button-start);
         }
         button.btn:hover{
             transform: scale(1.2);
         }
-        
+
         button.restart{
             background-color: var(--bg-button-restart);
         }
@@ -139,6 +137,17 @@ main.frame{
         div.scoreShow{
             display: none;
             gap: var(--space-2xl);
+        }
+    }
+    section.start-game{
+        button.btn{
+            background-color: var(--bg-button-start);
+        }
+    }
+    section.end-game{
+        display: none;
+        button.btn{
+            background-color: var(--bg-button-restart);
         }
     }
 

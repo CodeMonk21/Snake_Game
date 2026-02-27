@@ -111,7 +111,6 @@ main.frame section.model button.btn {
   color: var(--text-color);
   cursor: pointer;
   transition: all ease-in-out 0.2s;
-  background-color: var(--bg-button-start);
 }
 main.frame section.model button.btn:hover {
   transform: scale(1.2);
@@ -122,4 +121,13 @@ main.frame section.model button.restart {
 main.frame section.model div.scoreShow {
   display: none;
   gap: var(--space-2xl);
+}
+main.frame section.start-game button.btn {
+  background-color: var(--bg-button-start);
+}
+main.frame section.end-game {
+  display: none;
+}
+main.frame section.end-game button.btn {
+  background-color: var(--bg-button-restart);
 }/*# sourceMappingURL=style.css.map */
