@@ -6,12 +6,16 @@ const modal = document.querySelector(".model");
 const startGameModal = document.querySelector(".start-game");
 const gameOverModal = document.querySelector(".end-game");
 const restartButton = document.querySelector(".restartButton");
+const hightScoreElement = document.querySelector(".highScore")
+const scoreElement = document.querySelector(".score")
+const timeElement = document.querySelector(".time")
 const blockHeight = 50;
 const blockWidth = 50;
 
 const columns = Math.floor(board.clientWidth / blockWidth);
 const rows = Math.floor(board.clientHeight / blockHeight);
 let interval = null;
+let timeInterval = null;
 let food = {
   x: Math.floor(Math.random() * rows + 1),
   y: Math.floor(Math.random() * columns + 1),
@@ -21,18 +25,9 @@ const blocks = [];
 let snake = [{ x: 1, y: 5 }];
 let direction = "right";
 let score = 0;
-let highScore = 0;
+let highScore = localStorage.getItem("hightScore");
+let time = `00-00`
 
-// //Function to update score
-// const updateScore = ()=>{
-//     score++
-//     document.querySelector(".score").innerText = score
-//     if(score>highScore){
-//         highScore = score
-//         document.querySelector(".highScore").innerHTML = highScore
-//         sessionStorage.setItem("highScore",highScore)
-//     }
-// }
 
 //Blocks box create
 for (let i = 0; i < rows; i++) {
@@ -48,6 +43,8 @@ for (let i = 0; i < rows; i++) {
 //Render Snake object
 function renderSnake() {
   let head = null;
+
+  hightScoreElement.innerHTML = highScore 
 
   blocks[`${food.x}-${food.y}`].classList.add("foodFill");
 
@@ -65,6 +62,7 @@ function renderSnake() {
   //Wall collision logic
   if (head.y < 0 || head.y >=columns || head.x < 0 || head.x >=rows) {
     clearInterval(interval);
+    clearInterval(timeInterval)
     head = { x: 1, y: 5 };
     gameOverModal.style.display = "flex";
   }
@@ -76,7 +74,13 @@ function renderSnake() {
       x: Math.floor(Math.random() * rows),
       y: Math.floor(Math.random() * columns),
     };
-    // updateScore();
+    score++
+    scoreElement.innerHTML = score
+
+    if(score>highScore){
+        highScore = score
+        localStorage.setItem("hightScore",score)
+    }
   }
 
   //Remove color from snake previous cordinate
@@ -98,16 +102,29 @@ function restartGame() {
   });
   gameOverModal.style.display = "none";
   direction = "right"
+  score = 0
+  scoreElement.innerHTML = "00"
   snake = [{ x: 1, y: 5 }];
+  time = `00-00`
+  timeElement.innerHTML = time
   interval = setInterval(() => renderSnake(), 400);
 }
 
 //Start button
 startButton.addEventListener("click", () => {
   modal.style.display = "none";
-  interval = setInterval(() => {
-    renderSnake();
-  }, 400);
+  let [minute,second] = time.split("-").map((time)=> Number(time))
+  interval = setInterval(() => renderSnake(), 400);
+  timeInterval = setInterval(()=>{
+    second++
+    if(second>=60){
+        minute++
+        second = 0
+    }
+    timeElement.innerHTML = `${minute}-${second}`
+  },1000)
+
+
 });
 
 restartButton.addEventListener("click", restartGame);
