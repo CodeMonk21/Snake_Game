@@ -83,6 +83,7 @@ main.frame section.gridBoard {
 main.frame section.gridBoard div.box {
   border: 1px solid var(--border-primary-color);
   font-size: var(--fontSize-sm);
+  border-radius: 50%;
 }
 main.frame section.gridBoard .fill {
   background-color: var(--bg-snake-body);

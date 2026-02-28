@@ -34,7 +34,6 @@ for (let i = 0; i < rows; i++) {
   for (let j = 0; j < columns; j++) {
     const blockElement = document.createElement("div");
     blockElement.classList.add("box");
-    blockElement.innerHTML = `${i}-${j}`;
     blocks[`${i}-${j}`] = blockElement;
     board.appendChild(blockElement);
   }
