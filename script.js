@@ -6,9 +6,9 @@ const modal = document.querySelector(".model");
 const startGameModal = document.querySelector(".start-game");
 const gameOverModal = document.querySelector(".end-game");
 const restartButton = document.querySelector(".restartButton");
-const hightScoreElement = document.querySelector(".highScore")
-const scoreElement = document.querySelector(".score")
-const timeElement = document.querySelector(".time")
+const hightScoreElement = document.querySelector(".highScore");
+const scoreElement = document.querySelector(".score");
+const timeElement = document.querySelector(".time");
 const blockHeight = 50;
 const blockWidth = 50;
 
@@ -26,8 +26,8 @@ let snake = [{ x: 1, y: 5 }];
 let direction = "right";
 let score = 0;
 let highScore = localStorage.getItem("hightScore");
-let time = `00-00`
-
+let time = `00-00`;
+let speed = 300
 
 //Blocks box create
 for (let i = 0; i < rows; i++) {
@@ -44,7 +44,7 @@ for (let i = 0; i < rows; i++) {
 function renderSnake() {
   let head = null;
 
-  hightScoreElement.innerHTML = highScore 
+  hightScoreElement.innerHTML = highScore;
 
   blocks[`${food.x}-${food.y}`].classList.add("foodFill");
 
@@ -59,28 +59,33 @@ function renderSnake() {
     head = { x: snake[0].x - 1, y: snake[0].y };
   }
 
-  //Wall collision logic
-  if (head.y < 0 || head.y >=columns || head.x < 0 || head.x >=rows) {
+  //Body collision logic:- Wall boundry or body collide
+  if (collisionLogic(head)) {
     clearInterval(interval);
-    clearInterval(timeInterval)
+    clearInterval(timeInterval);
     head = { x: 1, y: 5 };
     gameOverModal.style.display = "flex";
   }
-  //Food eatin logic
+
+  //Food eating logic
   if (head.x == food.x && head.y == food.y) {
+    //Update food previous position and snake body
     blocks[`${food.x}-${food.y}`].classList.remove("foodFill");
     snake.unshift(head);
     food = {
       x: Math.floor(Math.random() * rows),
       y: Math.floor(Math.random() * columns),
     };
-    score++
-    scoreElement.innerHTML = score
-
-    if(score>highScore){
-        highScore = score
-        localStorage.setItem("hightScore",score)
+    //Update the score
+    score++;
+    scoreElement.innerHTML = score;
+    //Update the hightscore according to it
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem("hightScore", score);
     }
+    //increse speed:- 50 millisecond
+    speed += 50
   }
 
   //Remove color from snake previous cordinate
@@ -101,30 +106,42 @@ function restartGame() {
     blocks[`${cord.x}-${cord.y}`].classList.remove("fill");
   });
   gameOverModal.style.display = "none";
-  direction = "right"
-  score = 0
-  scoreElement.innerHTML = "00"
+  direction = "right";
+  score = 0;
+  scoreElement.innerHTML = "00";
   snake = [{ x: 1, y: 5 }];
-  time = `00-00`
-  timeElement.innerHTML = time
+  time = `00-00`;
+  timeElement.innerHTML = time;
   interval = setInterval(() => renderSnake(), 400);
+}
+
+//Return true or false if the snake is collied or not
+function collisionLogic(snakeHead) {
+    let snakeBody = snake.slice(1)
+    if(snakeHead.y < 0 || snakeHead.y >= columns || snakeHead.x < 0 || snakeHead.x >= rows){
+        return true
+    }
+    for (let i = 0; i < snakeBody.length; i++) {
+        if(snakeBody[i].x==snakeHead.x && snakeBody[i].y==snakeHead.y){
+            return true
+        }
+    }
+    return false
 }
 
 //Start button
 startButton.addEventListener("click", () => {
   modal.style.display = "none";
-  let [minute,second] = time.split("-").map((time)=> Number(time))
-  interval = setInterval(() => renderSnake(), 400);
-  timeInterval = setInterval(()=>{
-    second++
-    if(second>=60){
-        minute++
-        second = 0
+  let [minute, second] = time.split("-").map((time) => Number(time));
+  interval = setInterval(() => renderSnake(), speed);
+  timeInterval = setInterval(() => {
+    second++;
+    if (second >= 60) {
+      minute++;
+      second = 0;
     }
-    timeElement.innerHTML = `${minute}-${second}`
-  },1000)
-
-
+    timeElement.innerHTML = `${minute}-${second}`;
+  }, 1000);
 });
 
 restartButton.addEventListener("click", restartGame);
