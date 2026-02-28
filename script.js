@@ -85,7 +85,9 @@ function renderSnake() {
       localStorage.setItem("hightScore", score);
     }
     //increse speed:- 50 millisecond
-    speed += 50
+    if(speed>=150){
+        speed -= 40
+    }
   }
 
   //Remove color from snake previous cordinate
